@@ -17,13 +17,11 @@ services:
   frontend:
     image: rifqio/multi-frontend
     hostname: frontend
-    # mem_limit: 128
     environment:
       - WDS_SOCKET_PORT=0
   nginx:
     image: rifqio/multi-nginx
     hostname: nginx
-    # mem_limit: 128
     ports:
       - "80:80"
     
