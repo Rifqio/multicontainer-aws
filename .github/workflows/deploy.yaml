@@ -1,0 +1,37 @@
+name: Deploy MultiDocker
+on:
+  push:
+    branches:
+      - main # check your repo, your default branch might be master!
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      # - run: docker build -t rifqio/react-test -f ./frontend/Dockerfile.dev ./client
+      # - run: docker run -e CI=true rifqio/react-test npm test
+ 
+      - run: docker build -t rifqio/multi-frontend-10-14 ./frontend
+      - run: docker build -t rifqio/multi-nginx-10-14 ./nginx
+      - run: docker build -t rifqio/multi-backend-10-14 ./backend
+     
+      - run: docker push rifqio/multi-client-10-14
+      - run: docker push rifqio/multi-nginx-10-14
+      - run: docker push rifqio/multi-backend-10-14
+ 
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+ 
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: multi_container
+          environment_name: Multicontainer-env
+          existing_bucket_name: elasticbeanstalk-us-east-1-384326354965
+          region: us-east-1
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
