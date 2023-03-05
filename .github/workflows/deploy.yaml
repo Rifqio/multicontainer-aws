@@ -13,13 +13,13 @@ jobs:
       # - run: docker build -t rifqio/react-test -f ./frontend/Dockerfile.dev ./client
       # - run: docker run -e CI=true rifqio/react-test npm test
  
-      - run: docker build -t rifqio/multi-frontend-10-14 ./frontend
-      - run: docker build -t rifqio/multi-nginx-10-14 ./nginx
-      - run: docker build -t rifqio/multi-backend-10-14 ./backend
+      - run: docker build -t rifqio/multi-frontend ./frontend
+      - run: docker build -t rifqio/multi-nginx ./nginx
+      - run: docker build -t rifqio/multi-backend ./backend
      
-      - run: docker push rifqio/multi-frontend-10-14
-      - run: docker push rifqio/multi-nginx-10-14
-      - run: docker push rifqio/multi-backend-10-14
+      - run: docker push rifqio/multi-frontend
+      - run: docker push rifqio/multi-nginx
+      - run: docker push rifqio/multi-backend
  
       - name: Generate deployment package
         run: zip -r deploy.zip . -x '*.git*'
