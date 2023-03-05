@@ -4,26 +4,26 @@ services:
     image: redis
   backend:
     image: rifqio/multi-backend
-    mem_limit: 128
+    # mem_limit: 128
     hostname: backend
     environment:
-      - DATABASE_HOST=$DBHOST
-      - DATABASE_USER=$DBUSER
-      - DATABASE_DB=$DBDB
-      - DATABASE_PASSWORD=$DBPASSWORD
-      - DATABASE_PORT=$DBPORT
-      - REDIS_HOST=$REDIS_HOST
-      - REDIS_PORT=$REDIS_PORT
+      - DATABASE_HOST=multi-docker-mysql.coxmi5uxmhe8.us-east-1.rds.amazonaws.com
+      - DATABASE_USER=root
+      - DATABASE_DB=project_test
+      - DATABASE_PASSWORD=herpderp
+      - DATABASE_PORT=3306
+      - REDIS_HOST=redis-multi-docker.fwl77i.ng.0001.use1.cache.amazonaws.com
+      - REDIS_PORT=6379
   frontend:
     image: rifqio/multi-frontend
     hostname: frontend
-    mem_limit: 128
+    # mem_limit: 128
     environment:
       - WDS_SOCKET_PORT=0
   nginx:
     image: rifqio/multi-nginx
     hostname: nginx
-    mem_limit: 128
+    # mem_limit: 128
     ports:
       - "80:80"
     
